@@ -1,3 +1,5 @@
+import sys
+sys.path.append('../src/')
 import interspace
 
 def test_euclidean():
