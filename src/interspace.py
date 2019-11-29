@@ -1,11 +1,29 @@
 import numpy as np
+import math
 
-# calculate the Euclidean distance between two vectors
+def haversine(coord1, coord2, R = 6372800):
+    '''
+    Important to note is that we have to take the radians of the longitude and latitude values.
+    R  corresponds to Earths mean radius in meters (6372800)
+    '''
+    lat1, lon1 = coord1
+    lat2, lon2 = coord2
+    
+    phi1, phi2 = math.radians(lat1), math.radians(lat2) 
+    dphi       = math.radians(lat2 - lat1)
+    dlambda    = math.radians(lon2 - lon1)
+    
+    a = math.sin(dphi/2)**2 + \
+        math.cos(phi1)*math.cos(phi2)*math.sin(dlambda/2)**2
+    
+    return 2*R*math.atan2(math.sqrt(a), math.sqrt(1 - a))
+
+def manhattan(vector_1, vector_2):
+    return minkowski(vector_1, vector_2, p=1)
+
 def euclidean(vector_1, vector_2):
-    distance = 0.0
-    for i in range(len(vector_1)):
-            distance += (vector_1[i] - vector_2[i])**2 
-    return (distance)**0.5
+    return minkowski(vector_1, vector_2, p=2)
+
 
 def minkowski(vector_1, vector_2, p=1):
     distance = 0.0
@@ -14,17 +32,6 @@ def minkowski(vector_1, vector_2, p=1):
     return (distance)**(1.0/p)
 
 def cosine_similarity(vector_1, vector_2):
-    return np.dot(vector_1, vector_2) / ((np.sqrt(np.dot(vector_1, vector_1)) * np.sqrt(np.dot(vector_2, vector_2))))
-
-def distance(vector_1, vector_2, p=1):
-    if len(vector_1) != len(vector_2):
-        return "Vector lengths mismatch"
-    
-    distances = {}
-    
-    distances['Euclidean'] = euclidean(vector_1, vector_2)
-    distances[str('Minkowski-')+str(p)] = minkowski(vector_1, vector_2, p=p)
-    distances['Cosine Similarity'] = cosine_similarity(vector_1, vector_2)
-
-        
-    return distances
+    num = np.dot(vector_1, vector_2)
+    den = (np.sqrt(np.dot(vector_1, vector_1)) * np.sqrt(np.dot(vector_2, vector_2)))
+    return num / den
