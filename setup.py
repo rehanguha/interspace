@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="interspace", # Replace with your own username
-    version="0.0.6",
+    version="0.0.7",
     author="Rehan Guha",
     py_modules=["interspace"],
     license='gpl-3.0',
