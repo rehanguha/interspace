@@ -21,8 +21,15 @@ def test_validate_var_type():
         interspace._validate_var_type(21, str)
 
 def test_validate_vector():
-    pass
-
+    assert interspace._validate_vector([21], dtype=int) == 21
+    with pytest.raises(ValueError):
+        interspace._validate_vector([21, 'a'], dtype=int)
+    with pytest.raises(ValueError):
+        interspace._validate_vector([1, [2]], dtype=int)
 
 def test_validate_weights():
-    pass
+    assert interspace._validate_weights(21) == 21
+    with pytest.raises(ValueError):
+        interspace._validate_weights(-1)
+    with pytest.raises(ValueError):
+        interspace._validate_weights("a")
