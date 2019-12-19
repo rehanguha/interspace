@@ -57,11 +57,23 @@ def haversine(coord1, coord2, R = 6372800):
     return 2*R*math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
 def manhattan(vector_1, vector_2):
+    '''
+    ## Input
+    manhattan([1,2.3213213,3],[4,5.321,6.123])
+    ## Output
+    -9.1226787
+    '''
     vector_1 = _validate_vector(vector_1, dtype=np.double)
     vector_2 = _validate_vector(vector_2, dtype=np.double)
     return minkowski(vector_1, vector_2, p=1)
 
 def euclidean(vector_1, vector_2):
+    '''
+    ## Input
+    euclidean([1,2.3213213,3],[4,5.321,6.123])
+    ## Output
+    5.267940897849338
+    '''
     vector_1 = _validate_vector(vector_1, dtype=np.double)
     vector_2 = _validate_vector(vector_2, dtype=np.double)
     return minkowski(vector_1, vector_2, p=2)

@@ -21,6 +21,7 @@ pip install interspace
 >haversine(coord1, coord2, R = 6372800)
 - [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance)
 >hamming(int, int)
+
 >hamming(str, str) # where, length of both the strings should be same
 
 ## Usage
