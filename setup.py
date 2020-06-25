@@ -5,10 +5,10 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="interspace", # Replace with your own username
-    version="0.0.8",
+    version="0.0.9",
     author="Rehan Guha",
     py_modules=["interspace"],
-    license='gpl-3.0',
+    license='mit',
     author_email="rehanguha29@gmail.com",
     description="Interspace gives us different type distances between two vectors.",
     long_description=long_description,
@@ -19,7 +19,7 @@ setuptools.setup(
     keywords = ['distance', 'ml', 'machine learning', 'maths', 'vectors', 'space'],
     classifiers=[
         "Operating System :: OS Independent",
-        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+        "License :: OSI Approved :: MIT License",
         "Natural Language :: English",
         "Programming Language :: Python",
         'Topic :: Software Development :: Libraries :: Python Modules',
