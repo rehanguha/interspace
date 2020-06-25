@@ -9,6 +9,7 @@ pip install interspace
 ```
 
 ## Different Distance Functions
+
 - [Minkowski distance(p-Norm Distance)](https://en.wikipedia.org/wiki/Minkowski_distance)
 >minkowski(vector_1, vector_2, p=1)
 - [Euclidean distance (2-norm distance)](https://en.wikipedia.org/wiki/Euclidean_distance)
