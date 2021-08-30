@@ -3,12 +3,12 @@ import numpy as np
 import math
 
 __all__ = ["haversine",
-           "manhattan",
-           "euclidean",
-           "minkowski",
-           "cosine_similarity",
-           "hamming",
-		   "mahalanobis"]
+        	"manhattan",
+        	"euclidean",
+        	"minkowski",
+        	"cosine_similarity",
+        	"hamming",
+			"mahalanobis"]
 
 
 def _validate_vector(vector, dtype=None):
