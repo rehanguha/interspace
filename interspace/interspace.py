@@ -7,7 +7,8 @@ __all__ = ["haversine",
            "euclidean",
            "minkowski",
            "cosine_similarity",
-           "hamming"]
+           "hamming",
+		   "mahalanobis"]
 
 
 def _validate_vector(vector, dtype=None):
@@ -94,6 +95,10 @@ def cosine_similarity(vector_1, vector_2):
     den = (np.sqrt(np.dot(vector_1, vector_1)) * np.sqrt(np.dot(vector_2, vector_2)))
     return num / den
 
-
-
-
+def mahalanobis(u,v,VI):    
+    u = _validate_vector(u)
+    v = _validate_vector(v)
+    VI = np.atleast_2d(VI)
+    delta = u - v
+    m = np.dot(np.dot(delta, VI), delta)
+    return np.sqrt(m)
