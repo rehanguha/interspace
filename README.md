@@ -9,13 +9,11 @@ A comprehensive collection of distance and similarity functions for vectors, seq
 
 ## Features
 
-- **Vector Distances**: Euclidean, Manhattan, Minkowski, Chebyshev, Cosine, Mahalanobis
-- **Geographic Distances**: Haversine (great-circle distance)
-- **Sequence Distances**: Hamming, Jaccard, Dice, Matching, Overlap
-- **Distribution Distances**: Canberra, Bray-Curtis, Squared Chord, Correlation
-- **Type hints** for better IDE support
-- **Comprehensive documentation** with examples
-- **100% test coverage**
+- **50+ Distance Functions** across multiple categories
+- **Pure Python + NumPy** - no external dependencies
+- **Comprehensive Documentation** with examples and formulas
+- **Type Hints** for better IDE support
+- **Modular Architecture** - import by category or use flat API
 
 ## Installation
 
@@ -44,22 +42,23 @@ pip install -e ".[dev]"
 ```python
 import interspace
 
-# Euclidean distance
-print(interspace.euclidean([1, 2, 3], [4, 5, 6]))
+# Direct access (flat API)
+interspace.euclidean([1, 2, 3], [4, 5, 6])
 # 5.196152422706632
 
-# Manhattan distance
-print(interspace.manhattan([1, 2, 3], [4, 5, 6]))
-# 9.0
+interspace.levenshtein_distance("kitten", "sitting")
+# 3
 
-# Cosine similarity
-print(interspace.cosine_similarity([1, 0, 0], [0, 1, 0]))
-# 0.0
+interspace.haversine((42.52, 15.28), (51.51, -0.13))
+# 1231910.73... (Zagreb to London in meters)
 
-# Haversine distance (in meters)
-print(interspace.haversine((42.5170365, 15.2778599), (51.5073219, -0.1276474)))
-# 1231910.73... (Zagreb to London)
+# Categorized access
+interspace.distances.vector.euclidean([1, 2], [3, 4])
+interspace.distances.string.levenshtein_distance("hello", "hallo")
+interspace.distances.geographic.haversine((0, 0), (1, 1))
 ```
+
+---
 
 ## Available Functions
 
@@ -67,29 +66,55 @@ print(interspace.haversine((42.5170365, 15.2778599), (51.5073219, -0.1276474)))
 
 | Function | Description | Formula |
 |----------|-------------|---------|
-| `euclidean(x, y)` | L2 norm distance | √Σ(xᵢ - yᵢ)² |
-| `manhattan(x, y)` | L1 norm / cityblock distance | Σ\|xᵢ - yᵢ\| |
-| `minkowski(x, y, p)` | Generalized p-norm distance | (Σ\|xᵢ - yᵢ\|ᵖ)^(1/p) |
-| `chebyshev_distance(x, y)` | L∞ norm / maximum distance | max\|xᵢ - yᵢ\| |
-| `cosine_similarity(x, y)` | Angular similarity | x·y / (‖x‖‖y‖) |
-| `cosine_distance(x, y)` | 1 - cosine_similarity | 1 - (x·y / (‖x‖‖y‖)) |
-| `mahalanobis(u, v, VI)` | Distance with covariance | √((u-v)ᵀVI(u-v)) |
+| `euclidean(x, y)` | L2 norm distance | `√Σ(xᵢ - yᵢ)²` |
+| `manhattan(x, y)` | L1 norm / cityblock distance | `Σ|xᵢ - yᵢ|` |
+| `minkowski(x, y, p)` | Generalized p-norm distance | `(Σ|xᵢ - yᵢ|ᵖ)^(1/p)` |
+| `chebyshev_distance(x, y)` | L∞ norm / maximum distance | `max|xᵢ - yᵢ|` |
+| `cosine_similarity(x, y)` | Angular similarity | `x·y / (‖x‖‖y‖)` |
+| `cosine_distance(x, y)` | 1 - cosine_similarity | `1 - (x·y / (‖x‖‖y‖))` |
+| `mahalanobis(u, v, VI)` | Distance with covariance | `√((u-v)ᵀVI(u-v))` |
 
-### Geographic Distances
+```python
+>>> interspace.euclidean([1, 2, 3], [4, 5, 6])
+5.196152422706632
+
+>>> interspace.minkowski([1, 2], [4, 6], p=1)  # Manhattan
+7.0
+
+>>> interspace.cosine_similarity([1, 0], [0, 1])
+0.0
+```
+
+### Weighted Distances
 
 | Function | Description |
 |----------|-------------|
-| `haversine(coord1, coord2, R=6372800)` | Great-circle distance between (lat, lon) pairs |
+| `weighted_euclidean(x, y, w)` | Weighted Euclidean distance |
+| `weighted_manhattan(x, y, w)` | Weighted Manhattan distance |
+| `weighted_minkowski(x, y, w, p)` | Weighted Minkowski distance |
 
-### Sequence/Set Distances
+```python
+>>> interspace.weighted_euclidean([1, 2], [4, 6], [1, 0.5])
+4.301162633521313
+```
+
+### Set Distances
 
 | Function | Description |
 |----------|-------------|
-| `hamming(a, b)` | Bitwise (integers) or positional mismatches (strings/arrays) |
-| `jaccard_distance(x, y)` | 1 - \|X ∩ Y\| / \|X ∪ Y\| |
-| `dice_distance(x, y)` | 1 - 2\|X ∩ Y\| / (\|X\| + \|Y\|) |
+| `jaccard_distance(x, y)` | 1 - |X ∩ Y| / |X ∪ Y| |
+| `dice_distance(x, y)` | 1 - 2|X ∩ Y| / (|X| + |Y|) |
 | `matching_distance(x, y)` | Proportion of mismatched positions |
-| `overlap_distance(x, y)` | 1 - \|X ∩ Y\| / min(\|X\|, \|Y\|) |
+| `overlap_distance(x, y)` | 1 - |X ∩ Y| / min(|X|, |Y|) |
+| `tanimoto_distance(x, y)` | Extended Jaccard for vectors |
+
+```python
+>>> interspace.jaccard_distance([1, 2, 3], [2, 3, 4])
+0.5
+
+>>> interspace.dice_distance([1, 2, 3], [2, 3, 4])
+0.4
+```
 
 ### Distribution Distances
 
@@ -101,115 +126,212 @@ print(interspace.haversine((42.5170365, 15.2778599), (51.5073219, -0.1276474)))
 | `pearson_distance(x, y)` | Alias for correlation_distance |
 | `squared_chord_distance(x, y)` | Squared chord distance |
 
-## Usage Examples
-
-### Basic Distances
-
 ```python
-import interspace
+>>> interspace.canberra_distance([1, 2, 3], [2, 2, 4])
+0.47619047619047616
 
-# Euclidean distance
-result = interspace.euclidean([1, 2, 3], [4, 5, 6])
-# 5.196152422706632
-
-# Minkowski with different p values
-interspace.minkowski([1, 2], [4, 6], p=1)  # Manhattan: 7.0
-interspace.minkowski([1, 2], [4, 6], p=2)  # Euclidean: 5.0
-interspace.minkowski([1, 2], [4, 6], p=3)  # ~5.04
-
-# Chebyshev (maximum) distance
-interspace.chebyshev_distance([1, 2, 3], [4, 5, 6])
-# 3.0
+>>> interspace.correlation_distance([1, 2, 3], [3, 2, 1])
+2.0
 ```
 
-### Cosine Similarity & Distance
+### Probability Distances
+
+| Function | Description |
+|----------|-------------|
+| `kl_divergence(p, q)` | Kullback-Leibler divergence |
+| `js_distance(p, q)` | Jensen-Shannon distance |
+| `bhattacharyya_distance(p, q)` | Distribution overlap measure |
+| `hellinger_distance(p, q)` | Fidelity-based distance |
+| `total_variation_distance(p, q)` | L1 distribution distance |
+| `wasserstein_distance(p, q)` | Earth Mover's Distance (1D) |
 
 ```python
-# Orthogonal vectors
-interspace.cosine_similarity([1, 0], [0, 1])  # 0.0
-interspace.cosine_distance([1, 0], [0, 1])    # 1.0
+>>> interspace.kl_divergence([0.5, 0.5], [0.5, 0.5])
+0.0
 
-# Identical vectors
-interspace.cosine_similarity([1, 1], [1, 1])  # 1.0
-interspace.cosine_distance([1, 1], [1, 1])    # 0.0
-
-# Opposite vectors
-interspace.cosine_similarity([1, 0], [-1, 0])  # -1.0
-interspace.cosine_distance([1, 0], [-1, 0])    # 2.0
+>>> interspace.js_distance([1.0, 0.0], [0.5, 0.5])
+0.4645034044881785
 ```
 
-### Geographic Distance (Haversine)
+### String Distances
+
+| Function | Description |
+|----------|-------------|
+| `hamming(a, b)` | Bitwise or per-position mismatches |
+| `hamming_distance_normalized(a, b)` | Normalized Hamming distance |
+| `levenshtein_distance(s1, s2)` | Edit distance |
+| `damerau_levenshtein_distance(s1, s2)` | Edit + transpositions |
+| `jaro_distance(s1, s2)` | String similarity |
+| `jaro_winkler_distance(s1, s2)` | Jaro with prefix weighting |
 
 ```python
-# Distance between two cities (in meters)
-zagreb = (45.8150, 15.9819)
-london = (51.5074, -0.1278)
-distance = interspace.haversine(zagreb, london)
-# ~1230000 meters (1230 km)
+>>> interspace.levenshtein_distance("kitten", "sitting")
+3
 
-# Use a different radius (e.g., Mars)
-mars_distance = interspace.haversine((0, 0), (45, 90), R=3389000)
+>>> interspace.jaro_winkler_distance("MARTHA", "MARHTA")
+0.9666666666666667
+
+>>> interspace.hamming(0b1010, 0b0011)
+2
 ```
 
-### Hamming Distance
+### Geographic Distances
+
+| Function | Description |
+|----------|-------------|
+| `haversine(coord1, coord2, R)` | Great-circle distance |
+| `vincenty_distance(coord1, coord2)` | Geodesic on ellipsoid |
+| `bearing(coord1, coord2)` | Direction between points |
+| `midpoint(coord1, coord2)` | Geographic midpoint |
+| `destination_point(coord, bearing, distance)` | Point along bearing |
 
 ```python
-# For integers (bitwise)
-interspace.hamming(0b1010, 0b0011)  # 2
+>>> zagreb = (45.8150, 15.9819)
+>>> london = (51.5074, -0.1278)
+>>> interspace.haversine(zagreb, london)
+1230000.0  # meters
 
-# For strings
-interspace.hamming("karolin", "kathrin")  # 3
-
-# For arrays
-interspace.hamming([1, 2, 3, 4], [1, 0, 3, 5])  # 2
+>>> interspace.bearing((0, 0), (1, 0))
+0.0  # North
 ```
 
-### Set-based Distances
+### Time Series Distances
+
+| Function | Description |
+|----------|-------------|
+| `dtw_distance(x, y)` | Dynamic Time Warping |
+| `euclidean_distance_1d(x, y)` | 1D Euclidean distance |
+| `longest_common_subsequence(x, y)` | LCS length |
 
 ```python
-# Jaccard distance
-interspace.jaccard_distance([1, 2, 3], [2, 3, 4])  # 0.5
+>>> interspace.dtw_distance([1, 2, 3], [1, 2, 2, 3])
+0.0
 
-# Dice distance
-interspace.dice_distance([1, 2, 3], [2, 3, 4])  # 0.4
-
-# Overlap distance
-interspace.overlap_distance([1, 2, 3], [2, 3, 4])  # 0.5
+>>> interspace.longest_common_subsequence([1, 2, 3, 4], [2, 3, 5])
+2
 ```
 
-### Distribution Distances
+### Matrix Distances
+
+| Function | Description |
+|----------|-------------|
+| `frobenius_distance(A, B)` | Frobenius norm distance |
+| `spectral_distance(A, B)` | Largest singular value |
+| `trace_distance(A, B)` | Nuclear norm distance / 2 |
 
 ```python
-# Canberra distance
-interspace.canberra_distance([1, 2, 3], [2, 2, 4])
-
-# Bray-Curtis distance
-interspace.braycurtis_distance([1, 2, 3], [2, 2, 4])
-
-# Correlation distance
-interspace.correlation_distance([1, 2, 3], [3, 2, 1])  # 2.0
+>>> A = [[1, 0], [0, 1]]
+>>> B = [[1, 0], [0, 2]]
+>>> interspace.spectral_distance(A, B)
+1.0
 ```
 
-### Mahalanobis Distance
+### Binary Distances
+
+| Function | Description |
+|----------|-------------|
+| `russell_rao_distance(x, y)` | Russell-Rao distance |
+| `sokal_sneath_distance(x, y)` | Sokal-Sneath distance |
+| `kulczynski_distance(x, y)` | Kulczynski distance |
 
 ```python
-import numpy as np
-
-# Inverse covariance matrix
-VI = np.array([[1, 0.5], [0.5, 1]])
-
-# Distance between two points
-interspace.mahalanobis([0, 0], [1, 1], VI)
+>>> interspace.russell_rao_distance([1, 0, 1, 0], [1, 1, 0, 0])
+0.75
 ```
 
-## API Reference
+### Normalized Distances
 
-For detailed API documentation, see the [API Reference](docs/api.md) or use Python's help:
+| Function | Description |
+|----------|-------------|
+| `normalized_euclidean(x, y)` | Euclidean / √n |
+| `standardized_euclidean(x, y, variances)` | Variance-weighted |
+| `seuclidean(x, y, V)` | Alias for standardized_euclidean |
+| `chi2_distance(x, y)` | Chi-squared distance |
+| `gower_distance(x, y, types, ranges)` | Mixed variable types |
 
 ```python
-import interspace
-help(interspace.euclidean)
+>>> interspace.chi2_distance([1, 2, 3], [2, 3, 4])
+0.2777777777777778
 ```
+
+### Physics Distances
+
+| Function | Description |
+|----------|-------------|
+| `angular_distance(angle1, angle2)` | Shortest angular distance |
+| `spherical_law_of_cosines(coord1, coord2)` | Alternative great-circle |
+| `euclidean_3d(point1, point2)` | 3D Euclidean distance |
+
+```python
+>>> interspace.angular_distance(10, 350)
+20.0
+
+>>> interspace.euclidean_3d([0, 0, 0], [1, 2, 2])
+3.0
+```
+
+### Information Theory
+
+| Function | Description |
+|----------|-------------|
+| `entropy(p, base)` | Shannon entropy |
+| `cross_entropy(p, q, base)` | Cross-entropy |
+| `mutual_information(x, y, base)` | Mutual information |
+
+```python
+>>> interspace.entropy([0.5, 0.5])
+1.0
+
+>>> interspace.mutual_information([0, 0, 1, 1], [0, 0, 1, 1])
+1.0
+```
+
+### Metrics Utilities
+
+| Function | Description |
+|----------|-------------|
+| `pairwise_distance(X, Y, metric)` | Compute distance matrix |
+| `is_distance_metric(func)` | Validate metric properties |
+
+```python
+>>> X = [[1, 2], [3, 4], [5, 6]]
+>>> interspace.pairwise_distance(X, metric="euclidean")
+array([[0.        , 2.82842712, 5.65685425],
+       [2.82842712, 0.        , 2.82842712],
+       [5.65685425, 2.82842712, 0.        ]])
+```
+
+---
+
+## Module Structure
+
+```
+interspace/
+├── __init__.py          # Main exports (flat API)
+├── _validators.py       # Internal validation helpers
+├── distances/
+│   ├── vector.py        # Euclidean, Manhattan, Minkowski, etc.
+│   ├── weighted.py      # Weighted distance functions
+│   ├── set.py           # Jaccard, Dice, Tanimoto, etc.
+│   ├── distribution.py  # Canberra, Bray-Curtis, etc.
+│   ├── probability.py   # KL, JS, Bhattacharyya, etc.
+│   ├── string.py        # Levenshtein, Jaro, Hamming, etc.
+│   ├── geographic.py    # Haversine, Vincenty, Bearing, etc.
+│   ├── time_series.py   # DTW, LCS, etc.
+│   ├── matrix.py        # Frobenius, Spectral, Trace
+│   ├── binary.py        # Russell-Rao, Sokal-Sneath, etc.
+│   ├── normalized.py    # Chi-squared, Gower, etc.
+│   └── physics.py       # Angular, 3D Euclidean, etc.
+├── information/
+│   └── theory.py        # Entropy, Cross-entropy, MI
+├── metrics/
+│   ├── pairwise.py      # Pairwise distance matrix
+│   └── validation.py    # Metric property validation
+└── misc/
+    └── misc.py          # Experimental functions
+```
+
+---
 
 ## Development
 

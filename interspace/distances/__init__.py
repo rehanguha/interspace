@@ -1,37 +1,26 @@
 # -*- coding: utf-8 -*-
 """
-Interspace - Distance and Similarity Functions for Vectors, Sequences, and Distributions.
+Distance functions module.
 
-A comprehensive collection of distance and similarity metrics commonly used
-in machine learning, data science, and scientific computing.
+This module contains all distance and similarity functions organized by category.
 
-Example
--------
->>> import interspace
->>> interspace.euclidean([1, 2, 3], [4, 5, 6])
-5.196152422706632
->>> interspace.cosine_similarity([1, 0, 0], [1, 0, 0])
-1.0
-
-Usage
------
-All functions can be accessed directly:
-
->>> import interspace
->>> interspace.haversine((0, 0), (1, 1))
-157225.35...
-
-Or through the module structure:
-
->>> interspace.distances.geographic.haversine((0, 0), (1, 1))
-157225.35...
+Submodules
+---------
+vector : Basic vector distances (Euclidean, Manhattan, Minkowski, etc.)
+weighted : Weighted distance functions
+set : Set-based distances (Jaccard, Dice, etc.)
+distribution : Distribution distances (Canberra, Bray-Curtis, etc.)
+probability : Probability distribution distances (KL, JS, Bhattacharyya, etc.)
+string : String/text distances (Levenshtein, Jaro, etc.)
+geographic : Geographic distances (Haversine, Vincenty, etc.)
+time_series : Time series distances (DTW, LCS, etc.)
+matrix : Matrix distances (Frobenius, Spectral, etc.)
+binary : Binary/categorical distances (Russell-Rao, etc.)
+normalized : Normalized distances (Chi-squared, Gower, etc.)
+physics : Physics-related distances (Angular, 3D Euclidean, etc.)
 """
 
-from __future__ import annotations
-
-__version__ = "0.1.0"
-
-# Import all distance functions for direct access
+# Import all functions for easy access
 from interspace.distances.vector import (
     euclidean,
     manhattan,
@@ -122,23 +111,6 @@ from interspace.distances.physics import (
     euclidean_3d,
 )
 
-# Import information theory functions
-from interspace.information.theory import (
-    entropy,
-    cross_entropy,
-    mutual_information,
-)
-
-# Import metrics functions
-from interspace.metrics.pairwise import pairwise_distance
-from interspace.metrics.validation import is_distance_metric
-
-# Import submodules for categorized access
-from interspace import distances
-from interspace import information
-from interspace import metrics
-from interspace import misc
-
 __all__ = [
     # Vector distances
     "euclidean",
@@ -206,11 +178,4 @@ __all__ = [
     "angular_distance",
     "spherical_law_of_cosines",
     "euclidean_3d",
-    # Information theory
-    "entropy",
-    "cross_entropy",
-    "mutual_information",
-    # Metrics
-    "pairwise_distance",
-    "is_distance_metric",
 ]
