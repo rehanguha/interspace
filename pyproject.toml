@@ -1,0 +1,87 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "interspace"
+version = "0.0.11"
+description = "Interspace provides different types of distance and similarity functions for vectors, sequences, and distributions."
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Rehan Guha", email = "rehanguha29@gmail.com"}
+]
+keywords = ["distance", "similarity", "ml", "machine learning", "maths", "vectors", "space", "metrics"]
+classifiers = [
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+]
+requires-python = ">=3.8"
+dependencies = ["numpy>=1.20"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "black>=23.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0",
+]
+docs = [
+    "sphinx>=5.0",
+    "sphinx-rtd-theme>=1.0",
+    "myst-parser>=0.18",
+]
+
+[project.urls]
+Homepage = "https://github.com/rehanguha/interspace"
+Documentation = "https://github.com/rehanguha/interspace#readme"
+Repository = "https://github.com/rehanguha/interspace.git"
+Issues = "https://github.com/rehanguha/interspace/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["interspace*"]
+
+[tool.pytest.ini_options]
+testpaths = ["interspace"]
+python_files = ["test_*.py"]
+addopts = "-v --cov=interspace --cov-report=term-missing"
+
+[tool.black]
+line-length = 100
+target-version = ["py38", "py39", "py310", "py311", "py312"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py38"
+select = ["E", "F", "W", "I", "N", "UP", "B", "C4"]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+
+[tool.coverage.run]
+source = ["interspace"]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+]

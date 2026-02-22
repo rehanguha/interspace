@@ -1,0 +1,19 @@
+# Development dependencies for interspace
+# Install with: pip install -r requirements-dev.txt
+
+# Core dependencies
+numpy>=1.20
+
+# Testing
+pytest>=7.0
+pytest-cov>=4.0
+
+# Code quality
+black>=23.0
+ruff>=0.1.0
+mypy>=1.0
+
+# Documentation (optional)
+# sphinx>=5.0
+# sphinx-rtd-theme>=1.0
+# myst-parser>=0.18
